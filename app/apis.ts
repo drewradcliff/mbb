@@ -62,3 +62,39 @@ export async function getSchedule(id: string): Promise<Schedule> {
     schedule,
   };
 }
+
+type Standings = {
+  name: string;
+  standings: Standing[];
+};
+
+type Standing = {
+  name: string;
+  teamId: string;
+  logo: string;
+  winLoss: string;
+};
+
+export async function getStandings(): Promise<Standings> {
+  const res = await fetch(
+    "https://site.web.api.espn.com/apis/v2/sports/basketball/mens-college-basketball/standings?region=us&lang=en&contentorigin=espn&group=4&season=2025"
+  );
+  const data = await res.json();
+
+  const teamsData = data.standings.entries.map((entry: any) => {
+    const { team, stats } = entry;
+
+    return {
+      name: team.displayName,
+      teamId: team.id,
+      logo: team.logos[0]?.href,
+      winLoss: stats.find((stat: any) => stat.displayName === "CONF")
+        .displayValue,
+    };
+  });
+
+  return {
+    name: data.shortName,
+    standings: teamsData.reverse(),
+  };
+}
