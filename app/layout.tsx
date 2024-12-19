@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Nav } from "@/components/nav";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -19,15 +20,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="pb-16 overflow-y-scroll h-[calc(100vh_-_80px)]">
+          {children}
+        </div>
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+          <Nav />
+        </div>
       </body>
     </html>
   );
