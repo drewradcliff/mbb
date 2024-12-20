@@ -98,3 +98,28 @@ export async function getStandings(): Promise<Standings> {
     standings: teamsData.reverse(),
   };
 }
+
+type Athlete = {
+  id: string;
+  name: string;
+  headshot: string;
+  number: string;
+  birthPlace: string;
+  experience: string;
+};
+
+export async function getRoster(id: string): Promise<Athlete[]> {
+  const res = await fetch(
+    `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${id}/roster`
+  );
+  const data = await res.json();
+
+  return data.athletes.map((athlete: any) => ({
+    id: athlete.id,
+    name: athlete.displayName,
+    headshot: athlete.headshot?.href,
+    number: athlete.jersey,
+    birthPlace: `${athlete.birthPlace.city}, ${athlete.birthPlace.state}`,
+    experience: athlete.experience.abbreviation,
+  }));
+}

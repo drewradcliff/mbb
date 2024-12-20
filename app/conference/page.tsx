@@ -6,7 +6,7 @@ export default async function Conference() {
 
   return (
     <div className="flex flex-col mx-4">
-      <h1 className="text-3xl font-semibold text-slate-900 py-4">{name}</h1>
+      <h1 className="text-3xl py-4">{name}</h1>
       <table>
         <tbody className="divide-y divide-gray-200">
           {standings.map((standing) => (
